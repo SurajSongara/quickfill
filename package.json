@@ -1,0 +1,37 @@
+{
+  "name": "quickfill",
+  "displayName": "QuickFill",
+  "version": "0.1.0",
+  "description": "Local-first browser vault and smart-fill command palette for forms",
+  "scripts": {
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "fuse.js": "^7.0.0",
+    "plasmo": "^0.89.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sharp": "^0.34.5",
+    "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.1.42",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.0"
+  },
+  "manifest": {
+    "permissions": [
+      "storage",
+      "contextMenus"
+    ],
+    "host_permissions": [
+      "<all_urls>"
+    ]
+  }
+}

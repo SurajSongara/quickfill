@@ -1,0 +1,6 @@
+export type { VaultEntry } from "./vault"
+export type { FieldContext } from "./dom"
+export { MatchKind } from "./matcher"
+export type { SuggestionResult } from "./matcher"
+export type { OverlayPosition, OverlayState } from "./overlay"
+export type { SearchState } from "./search"
