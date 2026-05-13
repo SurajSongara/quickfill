@@ -1,25 +1,30 @@
-import { useEffect, useRef } from "react"
-
 interface SearchBarProps {
   value: string
   onChange: (value: string) => void
 }
 
+const styles = {
+  input: {
+    width: "100%",
+    padding: "6px 10px",
+    fontSize: "13px",
+    color: "#fff",
+    background: "transparent",
+    border: "none",
+    borderBottom: "1px solid rgba(255, 255, 255, 0.25)",
+    outline: "none",
+    boxSizing: "border-box" as const
+  } as React.CSSProperties
+}
+
 export default function SearchBar({ value, onChange }: SearchBarProps) {
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
-
   return (
     <input
-      ref={inputRef}
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      placeholder="Search vault..."
-      className="w-full px-3 py-2 text-sm text-gray-900 bg-white border-b border-gray-200 outline-none placeholder-gray-400"
+      placeholder="Search..."
+      style={styles.input}
     />
   )
 }

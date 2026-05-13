@@ -1,7 +1,14 @@
 export default function LoadingState() {
   return (
-    <div className="px-3 py-4 text-center text-sm text-gray-400">
-      Searching...
+    <div
+      style={{
+        padding: "16px 12px",
+        textAlign: "center" as const,
+        fontSize: "14px",
+        color: "#9ca3af"
+      }}
+    >
+      Loading...
     </div>
   )
 }

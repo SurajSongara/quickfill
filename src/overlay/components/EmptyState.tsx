@@ -1,7 +1,14 @@
 export default function EmptyState() {
   return (
-    <div className="px-3 py-4 text-center text-sm text-gray-400">
-      No matches found
+    <div
+      style={{
+        padding: "16px 12px",
+        textAlign: "center" as const,
+        fontSize: "14px",
+        color: "rgba(255, 255, 255, 0.6)"
+      }}
+    >
+      No matches
     </div>
   )
 }
