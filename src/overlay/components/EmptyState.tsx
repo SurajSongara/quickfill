@@ -1,8 +1,9 @@
 interface EmptyStateProps {
   onAddKey?: () => void
+  isVaultEmpty?: boolean
 }
 
-export default function EmptyState({ onAddKey }: EmptyStateProps) {
+export default function EmptyState({ onAddKey, isVaultEmpty }: EmptyStateProps) {
   return (
     <div
       style={{
@@ -12,7 +13,7 @@ export default function EmptyState({ onAddKey }: EmptyStateProps) {
         color: "rgba(255, 255, 255, 0.6)"
       }}
     >
-      No matching entries
+      {isVaultEmpty ? "Your vault is empty" : "No matching entries"}
       {onAddKey && (
         <div style={{ marginTop: "8px" }}>
           <button

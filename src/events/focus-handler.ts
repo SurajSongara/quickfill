@@ -1,6 +1,7 @@
 import { isSupportedInput } from "~/dom"
 import { useOverlayStore } from "~/state/overlay-store"
 import { useSearchStore } from "~/state/search-store"
+import { useSessionStore } from "~/state/session-store"
 
 export function initFocusHandler(): () => void {
   const onFocusIn = (e: FocusEvent) => {
@@ -9,6 +10,8 @@ export function initFocusHandler(): () => void {
 
     const overlayEl = document.getElementById("quickfill-overlay")
     if (overlayEl && overlayEl.contains(el)) return
+
+    if (useSessionStore.getState().savedText) return
 
     useOverlayStore.getState().open(el)
     useSearchStore.getState().setQuery("")

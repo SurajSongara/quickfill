@@ -2,23 +2,29 @@ import { create } from "zustand"
 
 function calcPositionAndSize(el: HTMLElement) {
   const rect = el.getBoundingClientRect()
-  const height = 200
+  const height = 260
+  const margin = 6
 
   const inputWidth = rect.width
-  let top = rect.bottom + 4
+  let top = rect.bottom + margin
   let left = rect.left
   let width = Math.min(Math.max(inputWidth * 0.5, 180), 260)
 
   if (top + height > window.innerHeight) {
-    top = Math.max(4, rect.top - height - 4)
+    const spaceAbove = rect.top - margin
+    if (spaceAbove >= height) {
+      top = rect.top - height - margin
+    } else {
+      top = Math.max(margin, rect.top - height - margin)
+    }
   }
 
   if (left + width > window.innerWidth) {
-    left = Math.max(4, window.innerWidth - width - 4)
-    width = Math.min(width, window.innerWidth - left - 4)
+    left = Math.max(margin, window.innerWidth - width - margin)
+    width = Math.min(width, window.innerWidth - left - margin)
   }
 
-  if (left < 4) left = 4
+  if (left < margin) left = margin
 
   return { top, left, width }
 }

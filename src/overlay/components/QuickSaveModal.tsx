@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useVaultStore } from "~/state/vault-store"
 import { useSessionStore } from "~/state/session-store"
 
@@ -79,6 +79,15 @@ export default function QuickSaveModal() {
   useEffect(() => {
     if (savedText) setValue(savedText)
   }, [savedText])
+
+  const onKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") setSavedText(null)
+  }, [setSavedText])
+
+  useEffect(() => {
+    document.addEventListener("keydown", onKeyDown)
+    return () => document.removeEventListener("keydown", onKeyDown)
+  }, [onKeyDown])
 
   if (!savedText) return null
 

@@ -8,20 +8,18 @@ interface SuggestionListProps {
   selectedIndex: number
   onFill: (index: number) => void
   onAddKey: () => void
+  isVaultEmpty?: boolean
 }
 
 export default function SuggestionList({
   suggestions,
   selectedIndex,
   onFill,
-  onAddKey
+  onAddKey,
+  isVaultEmpty
 }: SuggestionListProps) {
   if (suggestions.length === 0) {
-    return (
-      <>
-        <EmptyState onAddKey={onAddKey} />
-      </>
-    )
+    return <EmptyState onAddKey={onAddKey} isVaultEmpty={isVaultEmpty} />
   }
 
   return (

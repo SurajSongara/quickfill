@@ -32,7 +32,8 @@ export default function SuggestionItem({
         textAlign: "left" as const,
         background: isSelected ? "rgba(6, 78, 59, 0.5)" : "transparent",
         color: "#fff",
-        boxSizing: "border-box" as const
+        boxSizing: "border-box" as const,
+        borderLeft: isSelected ? "3px solid #fff" : "3px solid transparent"
       }}
       onMouseEnter={(e) => {
         if (!isSelected) e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)"

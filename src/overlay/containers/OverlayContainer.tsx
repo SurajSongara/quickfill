@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { useOverlayStore } from "~/state/overlay-store"
 import { useSearchStore } from "~/state/search-store"
 import { useVaultStore } from "~/state/vault-store"
@@ -24,8 +24,11 @@ export default function OverlayContainer() {
 
   const vaultCreate = useVaultStore((s) => s.create)
   const fetchAll = useVaultStore((s) => s.fetchAll)
+  const entries = useVaultStore((s) => s.entries)
+  const vaultLoading = useVaultStore((s) => s.isLoading)
 
   const [showModal, setShowModal] = useState(false)
+  const fillErrorTimer = useRef<ReturnType<typeof setTimeout>>()
 
   if (!isOpen) return null
 
@@ -41,6 +44,8 @@ export default function OverlayContainer() {
         return
       } catch {
         setFillError("Failed to fill value")
+        clearTimeout(fillErrorTimer.current)
+        fillErrorTimer.current = setTimeout(() => setFillError(null), 3000)
         return
       }
     }
@@ -91,9 +96,12 @@ export default function OverlayContainer() {
                 padding: "4px 10px",
                 fontSize: "12px",
                 color: "#fca5a5",
-                background: "rgba(0,0,0,0.15)"
+                background: "rgba(0,0,0,0.15)",
+                textAlign: "left",
+                cursor: "pointer"
               }}
               role="alert"
+              onClick={() => setFillError(null)}
             >
               {fillError}
             </div>
@@ -103,6 +111,7 @@ export default function OverlayContainer() {
             selectedIndex={selectedIndex}
             onFill={handleFill}
             onAddKey={handleOpenModal}
+            isVaultEmpty={!vaultLoading && entries.length === 0}
           />
         </>
       )}

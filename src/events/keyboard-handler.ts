@@ -30,8 +30,8 @@ export function initKeyboardHandler(): () => void {
         const entry = results[selectedIndex]?.entry
         if (entry) {
           fillInputValue(el as HTMLInputElement | HTMLTextAreaElement, entry.value)
+          close()
         }
-        close()
         break
       }
 

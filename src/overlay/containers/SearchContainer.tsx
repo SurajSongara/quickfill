@@ -14,6 +14,8 @@ export default function SearchContainer() {
   const entries = useVaultStore((s) => s.entries)
   const fetchAll = useVaultStore((s) => s.fetchAll)
   const activeElement = useOverlayStore((s) => s.activeElement)
+  const setSelectedIndex = useOverlayStore((s) => s.setSelectedIndex)
+  const isLoading = useVaultStore((s) => s.isLoading)
 
   useEffect(() => {
     fetchAll()
@@ -25,6 +27,7 @@ export default function SearchContainer() {
       if (ctx) {
         const suggestions = getTopSuggestions(ctx, entries)
         setResults(suggestions)
+        setSelectedIndex(0)
         return
       }
     }
@@ -46,8 +49,9 @@ export default function SearchContainer() {
         .sort((a, b) => a.entry.key.localeCompare(b.entry.key))
         .slice(0, 3)
       setResults(filtered)
+      setSelectedIndex(0)
     }
-  }, [query, entries, activeElement, setResults, setSearching])
+  }, [query, entries, activeElement, setResults, setSearching, setSelectedIndex])
 
   return null
 }
