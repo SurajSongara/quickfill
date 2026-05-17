@@ -1,20 +1,27 @@
 import type { SuggestionResult } from "~/types"
 import SuggestionItem from "./SuggestionItem"
 import EmptyState from "./EmptyState"
+import AddKeyButton from "./AddKeyButton"
 
 interface SuggestionListProps {
   suggestions: SuggestionResult[]
   selectedIndex: number
   onFill: (index: number) => void
+  onAddKey: () => void
 }
 
 export default function SuggestionList({
   suggestions,
   selectedIndex,
-  onFill
+  onFill,
+  onAddKey
 }: SuggestionListProps) {
   if (suggestions.length === 0) {
-    return <EmptyState />
+    return (
+      <>
+        <EmptyState onAddKey={onAddKey} />
+      </>
+    )
   }
 
   return (
@@ -27,6 +34,7 @@ export default function SuggestionList({
           onFill={() => onFill(index)}
         />
       ))}
+      <AddKeyButton onClick={onAddKey} />
     </div>
   )
 }

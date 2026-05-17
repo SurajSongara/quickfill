@@ -1,8 +1,11 @@
+import { useState } from "react"
 import { useOverlayStore } from "~/state/overlay-store"
 import { useSearchStore } from "~/state/search-store"
+import { useVaultStore } from "~/state/vault-store"
 import { fillInputValue } from "~/dom"
 import SearchBar from "../components/SearchBar"
 import SuggestionList from "../components/SuggestionList"
+import AddKeyModal from "../components/AddKeyModal"
 
 export default function OverlayContainer() {
   const isOpen = useOverlayStore((s) => s.isOpen)
@@ -17,6 +20,11 @@ export default function OverlayContainer() {
   const results = useSearchStore((s) => s.results)
   const setQuery = useSearchStore((s) => s.setQuery)
 
+  const vaultCreate = useVaultStore((s) => s.create)
+  const fetchAll = useVaultStore((s) => s.fetchAll)
+
+  const [showModal, setShowModal] = useState(false)
+
   if (!isOpen) return null
 
   const handleFill = (index: number) => {
@@ -28,6 +36,20 @@ export default function OverlayContainer() {
       )
     }
     close()
+  }
+
+  const handleAddKey = async (input: Parameters<typeof vaultCreate>[0]) => {
+    await vaultCreate(input)
+    await fetchAll()
+    setShowModal(false)
+  }
+
+  const handleOpenModal = () => {
+    setShowModal(true)
+  }
+
+  const handleCancelModal = () => {
+    setShowModal(false)
   }
 
   return (
@@ -47,12 +69,19 @@ export default function OverlayContainer() {
         backdropFilter: "blur(4px)"
       }}
     >
-      <SearchBar value={query} onChange={setQuery} />
-      <SuggestionList
-        suggestions={results}
-        selectedIndex={selectedIndex}
-        onFill={handleFill}
-      />
+      {showModal ? (
+        <AddKeyModal onSubmit={handleAddKey} onCancel={handleCancelModal} />
+      ) : (
+        <>
+          <SearchBar value={query} onChange={setQuery} />
+          <SuggestionList
+            suggestions={results}
+            selectedIndex={selectedIndex}
+            onFill={handleFill}
+            onAddKey={handleOpenModal}
+          />
+        </>
+      )}
     </div>
   )
 }

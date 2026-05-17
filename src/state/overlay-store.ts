@@ -32,8 +32,8 @@ interface OverlayStoreState {
   activeElement: HTMLElement | null
   open: (el: HTMLElement) => void
   close: () => void
-  selectNext: () => void
-  selectPrev: () => void
+  selectNext: (maxIndex?: number) => void
+  selectPrev: (maxIndex?: number) => void
   setSelectedIndex: (index: number) => void
 }
 
