@@ -30,8 +30,10 @@ interface OverlayStoreState {
   width: number
   selectedIndex: number
   activeElement: HTMLElement | null
+  fillError: string | null
   open: (el: HTMLElement) => void
   close: () => void
+  setFillError: (msg: string | null) => void
   selectNext: (maxIndex?: number) => void
   selectPrev: (maxIndex?: number) => void
   setSelectedIndex: (index: number) => void
@@ -44,6 +46,7 @@ export const useOverlayStore = create<OverlayStoreState>((set, get) => ({
   width: 200,
   selectedIndex: 0,
   activeElement: null,
+  fillError: null,
 
   open: (el) => {
     const { top, left, width } = calcPositionAndSize(el)
@@ -53,7 +56,8 @@ export const useOverlayStore = create<OverlayStoreState>((set, get) => ({
       left,
       width,
       selectedIndex: 0,
-      activeElement: el
+      activeElement: el,
+      fillError: null
     })
   },
 
@@ -64,9 +68,12 @@ export const useOverlayStore = create<OverlayStoreState>((set, get) => ({
       left: 0,
       width: 200,
       selectedIndex: 0,
-      activeElement: null
+      activeElement: null,
+      fillError: null
     })
   },
+
+  setFillError: (fillError) => set({ fillError }),
 
   selectNext: (maxIndex?: number) => {
     const { selectedIndex } = get()

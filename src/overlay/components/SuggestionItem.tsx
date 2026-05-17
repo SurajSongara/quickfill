@@ -18,6 +18,8 @@ export default function SuggestionItem({
   return (
     <button
       onClick={onFill}
+      role="option"
+      aria-selected={isSelected}
       style={{
         width: "100%",
         padding: "5px 10px",

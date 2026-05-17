@@ -17,6 +17,7 @@ export default function EmptyState({ onAddKey }: EmptyStateProps) {
         <div style={{ marginTop: "8px" }}>
           <button
             onClick={onAddKey}
+            aria-label="Add new vault entry"
             style={{
               background: "rgba(255, 255, 255, 0.12)",
               border: "1px solid rgba(255, 255, 255, 0.25)",

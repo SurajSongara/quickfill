@@ -2,10 +2,6 @@ import { isSupportedInput } from "~/dom"
 import { useOverlayStore } from "~/state/overlay-store"
 import { useSearchStore } from "~/state/search-store"
 
-function log(...args: unknown[]) {
-  console.log("[QuickFill]", ...args)
-}
-
 export function initFocusHandler(): () => void {
   const onFocusIn = (e: FocusEvent) => {
     const el = e.target as HTMLElement
@@ -14,7 +10,6 @@ export function initFocusHandler(): () => void {
     const overlayEl = document.getElementById("quickfill-overlay")
     if (overlayEl && overlayEl.contains(el)) return
 
-    log("focus:", el.id || el.name || el.placeholder || el.tagName)
     useOverlayStore.getState().open(el)
     useSearchStore.getState().setQuery("")
   }
@@ -27,7 +22,6 @@ export function initFocusHandler(): () => void {
     const overlayEl = document.getElementById("quickfill-overlay")
     if (overlayEl && related && overlayEl.contains(related)) return
 
-    log("close: focus moved outside")
     useOverlayStore.getState().close()
     useSearchStore.getState().clear()
   }

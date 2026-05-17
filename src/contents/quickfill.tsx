@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import type { PlasmoCSConfig, PlasmoGetRootContainer } from "plasmo"
 import OverlayRoot from "~/overlay"
 import { initEventEngine } from "~/events"
+import { useSessionStore } from "~/state/session-store"
 
 export const config: PlasmoCSConfig = {
   matches: ["<all_urls>"]
@@ -36,7 +37,22 @@ export default function QuickFillContent() {
   useEffect(() => {
     injectStyles()
     const cleanup = initEventEngine()
-    return cleanup
+
+    const onMessage = (msg: { type: string }) => {
+      if (msg.type === "save-selection") {
+        const sel = window.getSelection()
+        const text = sel?.toString().trim()
+        if (text) {
+          useSessionStore.getState().setSavedText(text)
+        }
+      }
+    }
+    chrome.runtime.onMessage.addListener(onMessage)
+
+    return () => {
+      cleanup()
+      chrome.runtime.onMessage.removeListener(onMessage)
+    }
   }, [])
 
   return <OverlayRoot />

@@ -14,6 +14,8 @@ export default function OverlayContainer() {
   const width = useOverlayStore((s) => s.width)
   const selectedIndex = useOverlayStore((s) => s.selectedIndex)
   const close = useOverlayStore((s) => s.close)
+  const fillError = useOverlayStore((s) => s.fillError)
+  const setFillError = useOverlayStore((s) => s.setFillError)
   const activeElement = useOverlayStore((s) => s.activeElement)
 
   const query = useSearchStore((s) => s.query)
@@ -30,10 +32,17 @@ export default function OverlayContainer() {
   const handleFill = (index: number) => {
     const entry = results[index]?.entry
     if (entry && activeElement) {
-      fillInputValue(
-        activeElement as HTMLInputElement | HTMLTextAreaElement,
-        entry.value
-      )
+      try {
+        fillInputValue(
+          activeElement as HTMLInputElement | HTMLTextAreaElement,
+          entry.value
+        )
+        close()
+        return
+      } catch {
+        setFillError("Failed to fill value")
+        return
+      }
     }
     close()
   }
@@ -54,6 +63,8 @@ export default function OverlayContainer() {
 
   return (
     <div
+      role="dialog"
+      aria-label="QuickFill suggestions"
       style={{
         position: "fixed",
         zIndex: 2147483647,
@@ -74,6 +85,19 @@ export default function OverlayContainer() {
       ) : (
         <>
           <SearchBar value={query} onChange={setQuery} />
+          {fillError && (
+            <div
+              style={{
+                padding: "4px 10px",
+                fontSize: "12px",
+                color: "#fca5a5",
+                background: "rgba(0,0,0,0.15)"
+              }}
+              role="alert"
+            >
+              {fillError}
+            </div>
+          )}
           <SuggestionList
             suggestions={results}
             selectedIndex={selectedIndex}

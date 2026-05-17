@@ -24,6 +24,7 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder="Search..."
+      aria-label="Search vault"
       style={styles.input}
     />
   )

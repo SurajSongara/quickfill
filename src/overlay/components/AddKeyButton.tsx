@@ -20,6 +20,7 @@ export default function AddKeyButton({ onClick }: AddKeyButtonProps) {
     <button
       style={btnStyle}
       onClick={onClick}
+      aria-label="Add new vault entry"
       onMouseEnter={(e) => {
         e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)"
         e.currentTarget.style.color = "#fff"
