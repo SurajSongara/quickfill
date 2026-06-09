@@ -6,6 +6,7 @@ import { fillInputValue } from "~/dom"
 import SearchBar from "../components/SearchBar"
 import SuggestionList from "../components/SuggestionList"
 import AddKeyModal from "../components/AddKeyModal"
+import SettingsPanel from "../components/SettingsPanel"
 
 export default function OverlayContainer() {
   const isOpen = useOverlayStore((s) => s.isOpen)
@@ -28,6 +29,7 @@ export default function OverlayContainer() {
   const vaultLoading = useVaultStore((s) => s.isLoading)
 
   const [showModal, setShowModal] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
   const fillErrorTimer = useRef<ReturnType<typeof setTimeout>>()
 
   if (!isOpen) return null
@@ -89,7 +91,11 @@ export default function OverlayContainer() {
         <AddKeyModal onSubmit={handleAddKey} onCancel={handleCancelModal} />
       ) : (
         <>
-          <SearchBar value={query} onChange={setQuery} />
+          <SearchBar
+            value={query}
+            onChange={setQuery}
+            onSettingsClick={() => setShowSettings((v) => !v)}
+          />
           {fillError && (
             <div
               style={{
@@ -106,13 +112,17 @@ export default function OverlayContainer() {
               {fillError}
             </div>
           )}
-          <SuggestionList
-            suggestions={results}
-            selectedIndex={selectedIndex}
-            onFill={handleFill}
-            onAddKey={handleOpenModal}
-            isVaultEmpty={!vaultLoading && entries.length === 0}
-          />
+          {showSettings ? (
+            <SettingsPanel />
+          ) : (
+            <SuggestionList
+              suggestions={results}
+              selectedIndex={selectedIndex}
+              onFill={handleFill}
+              onAddKey={handleOpenModal}
+              isVaultEmpty={!vaultLoading && entries.length === 0}
+            />
+          )}
         </>
       )}
     </div>

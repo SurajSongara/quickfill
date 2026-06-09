@@ -36,7 +36,10 @@ export const getRootContainer: PlasmoGetRootContainer = async () => {
 export default function QuickFillContent() {
   useEffect(() => {
     injectStyles()
-    const cleanup = initEventEngine()
+    let cleanup: (() => void) | null = null
+    initEventEngine().then((fn) => {
+      cleanup = fn
+    })
 
     const onMessage = (msg: { type: string }) => {
       if (msg.type === "save-selection") {
@@ -50,7 +53,7 @@ export default function QuickFillContent() {
     chrome.runtime.onMessage.addListener(onMessage)
 
     return () => {
-      cleanup()
+      cleanup?.()
       chrome.runtime.onMessage.removeListener(onMessage)
     }
   }, [])

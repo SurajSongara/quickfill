@@ -35,7 +35,11 @@ function partialMatchKey(
   term: string
 ): boolean {
   const key = entry.key.toLowerCase().trim()
-  return key.length > 0 && term.length > 0 && key.includes(term)
+  if (key.length === 0 || term.length === 0) return false
+  if (key.includes(term)) return true
+  const normKey = key.replace(/[-_\s]+/g, "")
+  const normTerm = term.replace(/[-_\s]+/g, "")
+  return normKey.includes(normTerm) || normTerm.includes(normKey)
 }
 
 export function rankSuggestions(

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import type { CreateVaultEntryInput } from "~/vault/vault-service"
 
 interface AddKeyModalProps {
@@ -7,12 +7,17 @@ interface AddKeyModalProps {
 }
 
 export default function AddKeyModal({ onSubmit, onCancel }: AddKeyModalProps) {
+  const keyRef = useRef<HTMLInputElement>(null)
   const [key, setKey] = useState("")
   const [value, setValue] = useState("")
   const [aliases, setAliases] = useState("")
   const [sensitive, setSensitive] = useState(false)
   const [error, setError] = useState("")
   const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    keyRef.current?.focus()
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -49,11 +54,11 @@ export default function AddKeyModal({ onSubmit, onCancel }: AddKeyModalProps) {
       }}
     >
       <input
+        ref={keyRef}
         placeholder="Key"
         value={key}
         onChange={(e) => setKey(e.target.value)}
         style={inputStyle}
-        autoFocus
       />
       <input
         placeholder="Value"

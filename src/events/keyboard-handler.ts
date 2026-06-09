@@ -1,11 +1,27 @@
 import { isSupportedInput, fillInputValue } from "~/dom"
 import { useOverlayStore } from "~/state/overlay-store"
 import { useSearchStore } from "~/state/search-store"
+import { useSettingsStore } from "~/state/settings-store"
 
 export function initKeyboardHandler(): () => void {
   const onKeyDown = (e: KeyboardEvent) => {
     const el = e.target as HTMLElement
     if (!isSupportedInput(el)) return
+
+    const overlayEl = document.getElementById("quickfill-overlay")
+    if (overlayEl && overlayEl.contains(el)) return
+
+    const settings = useSettingsStore.getState()
+    if (
+      settings.triggerMode === "keystroke" &&
+      e.key === settings.triggerKey
+    ) {
+      e.preventDefault()
+      const value = (el as HTMLInputElement | HTMLTextAreaElement).value
+      useOverlayStore.getState().open(el)
+      useSearchStore.getState().setQuery(value)
+      return
+    }
 
     const { isOpen, close, selectedIndex, selectNext, selectPrev } =
       useOverlayStore.getState()
@@ -45,6 +61,9 @@ export function initKeyboardHandler(): () => void {
   const onInput = (e: Event) => {
     const el = e.target as HTMLInputElement | HTMLTextAreaElement
     if (!isSupportedInput(el)) return
+
+    const overlayEl = document.getElementById("quickfill-overlay")
+    if (overlayEl && overlayEl.contains(el)) return
 
     if (!useOverlayStore.getState().isOpen) return
 
