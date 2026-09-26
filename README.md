@@ -6,13 +6,21 @@ QuickFill is a Chrome extension that gives you instant access to your saved form
 
 ---
 
+> **Status: developer-loaded MVP.** Build from source and load the extension locally using the instructions below. Semantic matching and autonomous assistance are roadmap items.
+
+## Storage and security boundaries
+
+QuickFill is a form-filling utility, not a password manager. Values are stored in `chrome.storage.local` without application-level encryption. The `sensitive` flag masks values in the interface; it does not encrypt them. Use ordinary form data rather than passwords, API keys, or other secrets.
+
+The extension requests `storage` and `contextMenus` permissions and access to all URLs so it can offer suggestions across websites. When you fill a field, the destination page can read the inserted value. Local storage and zero telemetry do not change that behaviour.
+
 ## Features
 
 - **Smart suggestions** — type in any field, QuickFill shows matching vault entries (exact, alias, fuzzy match)
 - **Fast search** — filter your vault in real time from the overlay
 - **Inline add** — save new key/value pairs without leaving the page
 - **Save selection** — right-click any text on a page and save it directly to your vault
-- **Sensitive values** — passwords and secrets are masked by default
+- **Display masking** — entries marked sensitive are masked in the UI; storage remains unencrypted
 - **Keyboard-first** — navigate suggestions with `↑` `↓`, fill with `Enter`, dismiss with `Esc`
 - **Trigger modes** — auto-open on focus, or opt-in via a configurable keystroke (default: `/`)
 - **Privacy-first** — no cloud, no accounts, no telemetry. Everything stays in `chrome.storage.local`
